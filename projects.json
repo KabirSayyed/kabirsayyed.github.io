@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Turkish Retail Customer Segmentation",
+    "description": "Full-cycle segmentation analysis on a Turkish retail dataset: MySQL queries in Workbench, two-page Power BI dashboard (Gender & Sales / Age & Payment pages) with DAX measures for gender-filtered KPIs and top-category logic. Identified actionable customer clusters for targeted marketing.",
+    "tags": ["SQL", "Power BI", "DAX", "MySQL", "Customer Analytics"],
+    "image_path": "assets/turkish_retail.png",
+    "dashboard_embed_url": "",
+    "download_link": "https://github.com/KabirSayyed"
+  }
+]
