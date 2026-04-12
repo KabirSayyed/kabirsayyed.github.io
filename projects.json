@@ -5,6 +5,7 @@
     "tags": ["SQL", "Power BI", "DAX", "MySQL", "Customer Analytics"],
     "image_path": "assets/images/Dashboard_page_1.png",
     "dashboard_embed_url": "",
-    "download_link": "https://github.com/KabirSayyed/turkish-retail-customer-segmentation"
+    "github_link": "https://github.com/KabirSayyed/turkish-retail-customer-segmentation",
+    "view_link": "https://example.com/view-project"
   }
 ]
