@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turkish Retail Customer Segmentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --card: #181c26;
+      --border: #232840;
+      --accent: #e8c56d;
+      --accent2: #5b8dee;
+      --accent3: #e05e7a;
+      --text: #dde3f0;
+      --muted: #7a839e;
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 15, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1.2rem, 5vw, 4rem);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .topbar-brand {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .topbar-brand span { color: var(--accent); }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      padding: 0.45rem 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-home:hover { background: #f5d68a; transform: translateY(-1px); }
+
+    .btn-home svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      padding: clamp(4rem, 10vw, 9rem) clamp(1.2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem);
+      overflow: hidden;
+    }
+
+    .hero-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(91,141,238,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91,141,238,0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -80px; left: -60px;
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, rgba(232,197,109,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      bottom: -100px; right: -80px;
+      width: 500px; height: 350px;
+      background: radial-gradient(ellipse at center, rgba(91,141,238,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 820px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.6rem;
+      border: 1px solid rgba(232,197,109,0.25);
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      background: rgba(232,197,109,0.05);
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: var(--heading-font);
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.8;
+      margin-bottom: 2.2rem;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    .pill.blue { border-color: rgba(91,141,238,0.4); color: #7faaf5; background: rgba(91,141,238,0.07); }
+    .pill.gold { border-color: rgba(232,197,109,0.4); color: var(--accent); background: rgba(232,197,109,0.07); }
+    .pill.red  { border-color: rgba(224,94,122,0.4);  color: #e87a8f; background: rgba(224,94,122,0.07); }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      margin: 0 clamp(1.2rem, 6vw, 5rem);
+      width: auto;
+    }
+
+    /* ── SECTION ── */
+    section {
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.2rem, 6vw, 5rem);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 40px;
+      height: 1px;
+      background: var(--accent2);
+      opacity: 0.4;
+    }
+
+    .section-title {
+      font-family: var(--heading-font);
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.4rem;
+      line-height: 1.2;
+    }
+
+    .section-body {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.85;
+      max-width: 720px;
+    }
+
+    .section-body p + p { margin-top: 1rem; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 2.5rem;
+    }
+
+    .stat-box {
+      background: var(--card);
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .stat-box:hover { background: var(--surface); }
+
+    .stat-num {
+      font-family: var(--heading-font);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover { border-color: rgba(232,197,109,0.25); transform: translateY(-2px); }
+    .card:hover::before { opacity: 1; }
+
+    .card.blue { --card-accent: var(--accent2); }
+    .card.blue:hover { border-color: rgba(91,141,238,0.25); }
+
+    .card.red { --card-accent: var(--accent3); }
+    .card.red:hover { border-color: rgba(224,94,122,0.25); }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card-title {
+      font-family: var(--heading-font);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.7rem;
+    }
+
+    .card-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── SQL QUERIES SECTION ── */
+    .query-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .query-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+
+    .query-item:hover { border-color: rgba(91,141,238,0.3); }
+
+    .query-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent2);
+      background: rgba(91,141,238,0.1);
+      border: 1px solid rgba(91,141,238,0.2);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      letter-spacing: 0.08em;
+    }
+
+    .query-text {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── POWER BI SECTION ── */
+    .pbi-pages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .pbi-page {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pbi-page::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,197,109,0.07) 0%, transparent 70%);
+    }
+
+    .pbi-page.p2::after {
+      background: radial-gradient(circle, rgba(91,141,238,0.07) 0%, transparent 70%);
+    }
+
+    .pbi-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .pbi-page.p2 .pbi-label { color: var(--accent2); }
+
+    .pbi-title {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .pbi-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .pbi-metric {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .pbi-metric::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .pbi-page.p2 .pbi-metric::before { background: var(--accent2); }
+
+    /* ── FINDINGS ── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .finding {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .finding.b { border-left-color: var(--accent2); }
+    .finding.r { border-left-color: var(--accent3); }
+
+    .finding-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.55rem;
+    }
+
+    .finding.b .finding-title { color: var(--accent2); }
+    .finding.r .finding-title { color: #e87a8f; }
+
+    .finding p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── TECH STACK ── */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.8rem;
+    }
+
+    .tech-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text);
+      letter-spacing: 0.06em;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .tech-chip:hover { border-color: rgba(232,197,109,0.3); background: rgba(232,197,109,0.05); }
+
+    .tech-chip span.dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.2rem, 6vw, 5rem);
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ── FADE-IN ANIMATION ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.22s; }
+    .d3 { animation-delay: 0.35s; }
+    .d4 { animation-delay: 0.48s; }
+    .d5 { animation-delay: 0.6s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .topbar-brand { font-size: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="topbar-brand">Portfolio / <span>Project Case Study</span></div>
+    <a href="https://kabirsayyed.github.io" class="btn-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+        <path d="M9 21V12h6v9"/>
+      </svg>
+      Go to Homepage
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag fade-up d1">Data Analytics · Capstone Project</div>
+      <h1 class="fade-up d2">Turkish Retail<br /><em>Customer Segmentation</em></h1>
+      <p class="hero-desc fade-up d3">
+        A full-cycle analytics project — from raw transactional data to structured SQL insights and interactive Power BI dashboards — built to understand how different customer profiles shop, spend, and behave across a Turkish retail dataset.
+      </p>
+      <div class="hero-pills fade-up d4">
+        <span class="pill gold">MySQL</span>
+        <span class="pill blue">SQL</span>
+        <span class="pill">DAX</span>
+        <span class="pill red">Power BI</span>
+        <span class="pill blue">Data Analytics</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- OVERVIEW -->
+  <section>
+    <div class="section-label fade-up">Overview</div>
+    <h2 class="section-title fade-up">What this project is about</h2>
+    <div class="section-body fade-up">
+      <p>
+        Retail businesses generate mountains of transactional data, but without structure, that data doesn't tell you much. This project takes a real Turkish retail dataset — covering customer demographics, purchase categories, payment methods, and spending patterns — and turns it into something you can actually reason from.
+      </p>
+      <p>
+        The goal was to segment customers meaningfully: not just by age or gender, but by how they actually behave as shoppers. Which groups spend the most? How does payment preference differ across age brackets? What does the gender split look like across product categories? These are the kinds of questions this project was built to answer.
+      </p>
+    </div>
+
+    <div class="stats-row fade-up">
+      <div class="stat-box">
+        <div class="stat-num">9</div>
+        <div class="stat-label">SQL Queries</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Dashboard Pages</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">DAX</div>
+        <div class="stat-label">Custom Measures</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">360°</div>
+        <div class="stat-label">Customer View</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- SQL ANALYSIS -->
+  <section>
+    <div class="section-label fade-up">Phase 01</div>
+    <h2 class="section-title fade-up">SQL Analysis in MySQL</h2>
+    <div class="section-body fade-up">
+      <p>
+        Before any dashboard, the data had to be interrogated at the query level. Using MySQL, I worked through nine structured analytical queries — each one designed to pull a specific insight out of the dataset. The queries progressively built up a picture of customer behavior, from simple aggregations to more nuanced breakdowns.
+      </p>
+      <p>
+        One thing that mattered a lot here was being precise about what was actually being calculated. For example, there's a difference between using unit price and using the total transaction value — and getting that wrong would've skewed the spending analysis entirely. That kind of attention to what the data actually represents, not just what the column is named, shaped how every query was written.
+      </p>
+    </div>
+
+    <div class="query-list fade-up">
+      <div class="query-item">
+        <span class="query-num">Q01</span>
+        <span class="query-text">Total number of transactions and unique customers in the dataset</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q02</span>
+        <span class="query-text">Revenue breakdown by product category</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q03</span>
+        <span class="query-text">Average spending per customer segmented by gender</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q04</span>
+        <span class="query-text">Distribution of customers across age groups</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q05</span>
+        <span class="query-text">Top-performing product categories by total sales volume</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q06</span>
+        <span class="query-text">Payment method preferences across different customer segments</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q07</span>
+        <span class="query-text">High-value customer identification based on total spending</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q08</span>
+        <span class="query-text">Category-level spending behavior by age bracket</span>
+      </div>
+      <div class="query-item">
+        <span class="query-num">Q09</span>
+        <span class="query-text">Cross-analysis: gender vs. payment method usage patterns</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- POWER BI -->
+  <section>
+    <div class="section-label fade-up">Phase 02</div>
+    <h2 class="section-title fade-up">Power BI Dashboard</h2>
+    <div class="section-body fade-up">
+      <p>
+        With the SQL analysis complete, the next step was making those insights visual and interactive. The Power BI dashboard was built with a direct ODBC connection to MySQL — meaning the data flows live from the database, not a static export. DAX measures were written to handle custom calculations for the KPIs displayed across the report.
+      </p>
+      <p>
+        The dashboard is split across two focused pages, each tackling a different lens of the customer data. Rather than trying to pack everything into a single screen, each page has a specific analytical angle — which keeps the visuals clean and the story easy to follow.
+      </p>
+    </div>
+
+    <div class="pbi-pages fade-up">
+      <div class="pbi-page">
+        <div class="pbi-label">Page 01</div>
+        <div class="pbi-title">Gender &amp; Sales</div>
+        <div class="pbi-metrics">
+          <div class="pbi-metric">Gender-wise revenue and transaction split</div>
+          <div class="pbi-metric">Category performance broken down by gender</div>
+          <div class="pbi-metric">Spending distribution across male vs. female customers</div>
+          <div class="pbi-metric">KPI cards with DAX-calculated totals</div>
+        </div>
+      </div>
+      <div class="pbi-page p2">
+        <div class="pbi-label">Page 02</div>
+        <div class="pbi-title">Age &amp; Payment</div>
+        <div class="pbi-metrics">
+          <div class="pbi-metric">Age group segmentation and purchase behavior</div>
+          <div class="pbi-metric">Payment method distribution across age brackets</div>
+          <div class="pbi-metric">Average spend by age segment</div>
+          <div class="pbi-metric">Cross-filter slicers for interactive exploration</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- KEY FINDINGS -->
+  <section>
+    <div class="section-label fade-up">Insights</div>
+    <h2 class="section-title fade-up">What the data revealed</h2>
+    <div class="section-body fade-up">
+      <p>
+        The analysis surfaced some genuinely useful patterns — the kind that would matter for a real retail business thinking about targeting, inventory, or payment infrastructure.
+      </p>
+    </div>
+
+    <div class="findings-grid fade-up">
+      <div class="finding">
+        <div class="finding-title">Spending by Gender</div>
+        <p>Female customers showed higher average transaction values in certain categories, while male customers had more volume concentrated in a narrower set of product types.</p>
+      </div>
+      <div class="finding b">
+        <div class="finding-title">Age-Based Patterns</div>
+        <p>Middle-aged segments (30–50) drove the bulk of revenue. Younger segments showed preference for specific categories, suggesting different targeting strategies could be effective.</p>
+      </div>
+      <div class="finding r">
+        <div class="finding-title">Payment Preferences</div>
+        <p>Payment method usage wasn't uniform across age groups. Certain methods were heavily skewed toward older customers, while others were more evenly distributed — a pattern that has implications for checkout experience design.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-title">Category Concentration</div>
+        <p>Revenue was not spread evenly across product categories. A small number of categories accounted for a disproportionately large share of total sales, highlighting where the business has its strongest demand signal.</p>
+      </div>
+      <div class="finding b">
+        <div class="finding-title">High-Value Customers</div>
+        <p>A subset of customers consistently spent well above the average across multiple transactions. Identifying this group is the first step toward any retention or loyalty-based strategy.</p>
+      </div>
+      <div class="finding r">
+        <div class="finding-title">Cross-Segment Behavior</div>
+        <p>When gender and payment method were analyzed together, distinct behavioral clusters became visible — groups that don't emerge when looking at each variable in isolation.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-label fade-up">Tools &amp; Stack</div>
+    <h2 class="section-title fade-up">Built with</h2>
+    <div class="section-body fade-up">
+      <p>
+        The entire pipeline from data storage to final dashboard was handled with these tools. No shortcuts — every layer was connected and working together.
+      </p>
+    </div>
+
+    <div class="tech-stack fade-up">
+      <div class="tech-chip"><span class="dot" style="background:#5b8dee;"></span> MySQL</div>
+      <div class="tech-chip"><span class="dot" style="background:#e05e7a;"></span> SQL</div>
+      <div class="tech-chip"><span class="dot" style="background:#e8c56d;"></span> DAX</div>
+      <div class="tech-chip"><span class="dot" style="background:#a78bfa;"></span> Power BI</div>
+      <div class="tech-chip"><span class="dot" style="background:#658bb9;"></span> Customer Analytics</div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- WHAT I LEARNED -->
+  <section>
+    <div class="section-label fade-up">Reflection</div>
+    <h2 class="section-title fade-up">What this project taught me</h2>
+
+    <div class="cards-grid fade-up">
+      <div class="card">
+        <span class="card-icon">🔍</span>
+        <div class="card-title">Data precision matters more than you think</div>
+        <div class="card-body">There were moments where a single column choice — unit price versus total transaction value — would have produced completely different results. Learning to read what data actually represents before writing queries is something that only comes through doing the work.</div>
+      </div>
+      <div class="card blue">
+        <span class="card-icon">🔗</span>
+        <div class="card-title">Connecting the pipeline end-to-end</div>
+        <div class="card-body">Setting up a live ODBC connection from MySQL to Power BI was a real integration exercise. It meant understanding how both tools talk to each other, not just using them independently. That kind of end-to-end thinking changes how you approach building a report.</div>
+      </div>
+      <div class="card red">
+        <span class="card-icon">📊</span>
+        <div class="card-title">Visuals only land if the structure is right</div>
+        <div class="card-body">The dashboard only worked well because the SQL layer was solid. If the queries were wrong, the visuals would've looked fine but told a false story. Getting the data model right before touching Power BI was the right order of operations.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Built by <a href="/">Kabir Sayyed</a> · Turkish Retail Customer Segmentation </p>
+  </footer>
+
+</body>
+</html>
