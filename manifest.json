@@ -1,0 +1,19 @@
+{
+  "name": "Kabir — Data Analyst Portfolio",
+  "short_name": "Kabir Portfolio",
+  "description": "Portfolio website showcasing data analytics projects and skills",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0c0e",
+  "theme_color": "#daa520",
+  "orientation": "portrait-primary",
+  "categories": ["portfolio", "business", "productivity"],
+  "icons": [
+    {
+      "src": "assets/images/Dashboard_page_1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
