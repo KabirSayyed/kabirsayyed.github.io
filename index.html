@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Portfolio website showcasing data analytics projects and skills by Kabir Sayyed"/>
-  <meta name="theme-color" content="#daa520"/>
-  <link rel="manifest" href="manifest.json"/>
   <title>Kabir — Data Analyst Portfolio</title>
 
   <!-- Fonts: Cormorant Garamond (editorial serif) + JetBrains Mono (data terminal) -->
@@ -1668,20 +1666,6 @@
     ═══════════════════════════════════════════ */
     loadProjects();
 
-    /* ═══════════════════════════════════════════
-       SERVICE WORKER REGISTRATION
-    ═══════════════════════════════════════════ */
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('SW registered: ', registration);
-          })
-          .catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-          });
-      });
-    }
   </script>
 </body>
 </html>
