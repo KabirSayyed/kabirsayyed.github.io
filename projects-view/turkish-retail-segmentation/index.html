@@ -994,15 +994,21 @@
   </div>
 
   <script>
+    let modalScrollPosition = 0;
+
     function openModal(src) {
+      modalScrollPosition = window.scrollY || window.pageYOffset;
       document.getElementById('modalImage').src = src;
       document.getElementById('imageModal').style.display = 'flex';
+      document.body.style.top = `-${modalScrollPosition}px`;
       document.body.classList.add('modal-open');
     }
 
     function closeModal() {
       document.getElementById('imageModal').style.display = 'none';
       document.body.classList.remove('modal-open');
+      document.body.style.top = '';
+      window.scrollTo(0, modalScrollPosition);
     }
 
     // Add click event to images
