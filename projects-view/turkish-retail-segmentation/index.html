@@ -104,7 +104,7 @@
     /* ── HERO ── */
     .hero {
       position: relative;
-      padding: clamp(4rem, 10vw, 9rem) clamp(1.2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem);
+      padding: clamp(3rem, 8vw, 7rem) clamp(1rem, 5vw, 4rem) clamp(2rem, 6vw, 5rem);
       overflow: hidden;
     }
 
@@ -121,7 +121,8 @@
     .hero-glow {
       position: absolute;
       top: -80px; left: -60px;
-      width: 600px; height: 400px;
+      width: min(600px, 85vw);
+      height: min(400px, 60vh);
       background: radial-gradient(ellipse at center, rgba(232,197,109,0.07) 0%, transparent 65%);
       pointer-events: none;
     }
@@ -129,7 +130,8 @@
     .hero-glow2 {
       position: absolute;
       bottom: -100px; right: -80px;
-      width: 500px; height: 350px;
+      width: min(500px, 75vw);
+      height: min(350px, 50vh);
       background: radial-gradient(ellipse at center, rgba(91,141,238,0.06) 0%, transparent 65%);
       pointer-events: none;
     }
@@ -137,6 +139,7 @@
     .hero-inner {
       position: relative;
       max-width: 820px;
+      width: 100%;
     }
 
     .hero-tag {
@@ -153,6 +156,7 @@
       padding: 0.35rem 0.9rem;
       border-radius: 100px;
       background: rgba(232,197,109,0.05);
+      flex-wrap: wrap;
     }
 
     .hero-tag::before {
@@ -374,6 +378,7 @@
       border-radius: 8px;
       padding: 1.1rem 1.4rem;
       transition: border-color 0.2s;
+      flex-wrap: wrap;
     }
 
     .query-item:hover { border-color: rgba(91,141,238,0.3); }
@@ -396,6 +401,8 @@
       font-size: 0.92rem;
       color: var(--text);
       line-height: 1.6;
+      min-width: 0;
+      word-break: break-word;
     }
 
     /* ── POWER BI SECTION ── */
@@ -632,9 +639,53 @@
     .d5 { animation-delay: 0.6s; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .topbar-brand { font-size: 0.6rem; }
+    @media (max-width: 1200px) {
+      section { padding-inline: clamp(1rem, 4vw, 2.5rem); }
+      .hero { padding-inline: clamp(1rem, 4vw, 3rem); }
+      .topbar { padding-inline: clamp(1rem, 4vw, 3rem); }
+      .hero-bg-grid { background-size: 36px 36px; }
+    }
+
+    @media (max-width: 900px) {
+      .topbar { gap: 0.75rem; }
+      .topbar-brand { font-size: 0.72rem; }
+      .btn-home { padding: 0.4rem 0.9rem; font-size: 0.68rem; }
+      .hero { padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem); }
+      .hero-glow, .hero-glow2 { opacity: 0.8; }
+      .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+      .hero-desc { max-width: 100%; }
+      .stats-row { gap: 0.5rem; }
+      .query-item { gap: 0.85rem; }
+      .dashboard-images { gap: 1rem; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { flex-wrap: wrap; align-items: flex-start; height: auto; padding-top: 1rem; padding-bottom: 1rem; }
+      .topbar-brand { width: 100%; }
+      .btn-home { width: 100%; justify-content: center; }
+      .hero { padding: clamp(1.5rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem) clamp(1.5rem, 6vw, 3rem); }
+      .hero h1 { font-size: clamp(1.9rem, 6vw, 3rem); }
+      .hero-desc { font-size: 0.98rem; }
+      .stats-row { grid-template-columns: 1fr; }
+      .card, .pbi-page, .finding, .query-item, .dashboard-images img { width: 100%; }
+      .query-item { display: grid; grid-template-columns: auto 1fr; align-items: start; }
+      .query-num { margin-top: 0.2rem; }
+      .query-text { font-size: 0.9rem; }
+      .pbi-pages, .dashboard-images, .findings-grid, .cards-grid { grid-template-columns: 1fr; }
+      .section-body { font-size: 0.98rem; }
+    }
+
+    @media (max-width: 520px) {
+      .topbar { padding-inline: 1rem; }
+      .topbar-brand { font-size: 0.65rem; }
+      .btn-home { padding: 0.5rem; font-size: 0.72rem; }
+      .hero-tag { font-size: 0.65rem; }
+      .hero h1 { font-size: clamp(1.75rem, 7vw, 2.6rem); }
+      .hero-desc { line-height: 1.75; }
+      .pill { font-size: 0.65rem; padding: 0.25rem 0.7rem; }
+      .pbi-page, .card, .finding { padding: 1.4rem; }
+      .section { padding: 1.5rem 1rem; }
+      .footer { padding: 1.5rem 1rem; }
     }
   </style>
 </head>
@@ -648,7 +699,7 @@
         <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
         <path d="M9 21V12h6v9"/>
       </svg>
-      Go to Homepage
+      Homepage
     </a>
   </nav>
 
