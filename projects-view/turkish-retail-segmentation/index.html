@@ -416,24 +416,105 @@
       margin-top: 2rem;
     }
 
-    .dashboard-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.2rem;
+    /* ── DASHBOARD IFRAME ── */
+    .dashboard-iframe {
       margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
     }
 
-    .dashboard-images img {
+    .dashboard-iframe-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
       width: 100%;
-      height: auto;
+      position: relative;
+    }
+
+    .btn-fullscreen {
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-fullscreen:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
+
+    .fullscreen-close {
+      display: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+      text-align: center;
+      color: #fff;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    .dashboard-iframe iframe {
+      width: min(100%, 1100px);
+      max-width: 1100px;
+      height: clamp(620px, 52vw, 760px);
+      min-height: 600px;
       border-radius: 10px;
       border: 1px solid var(--border);
-      transition: transform 0.2s;
-      cursor: pointer;
     }
 
-    .dashboard-images img:hover {
-      transform: scale(1.02);
+    .dashboard-fullscreen-container.active {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(13, 15, 20, 0.96);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dashboard-fullscreen-container.active .dashboard-iframe-toolbar {
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .dashboard-fullscreen-container.active .btn-fullscreen:not(.fullscreen-close) {
+      display: none;
+    }
+
+    .dashboard-fullscreen-container.active .fullscreen-close {
+      display: inline-flex;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      transform: none;
+    }
+
+    .dashboard-fullscreen-container.active iframe {
+      width: 100%;
+      height: calc(100vh - 5rem);
+      max-width: none;
+      min-height: 0;
+      border-radius: 10px;
     }
 
     /* ── MODAL FOR IMAGES ── */
@@ -678,7 +759,6 @@
       .hero-pills { justify-content: center; }
       .stats-row { gap: 0.5rem; }
       .query-item { gap: 0.85rem; }
-      .dashboard-images { gap: 1rem; }
     }
 
     @media (max-width: 720px) {
@@ -689,12 +769,16 @@
       .hero h1 { font-size: clamp(1.9rem, 6vw, 3rem); }
       .hero-desc { font-size: 0.98rem; }
       .stats-row { grid-template-columns: 1fr; }
-      .card, .pbi-page, .finding, .query-item, .dashboard-images img { width: 100%; }
+      .card, .pbi-page, .finding, .query-item { width: 100%; }
       .query-item { display: grid; grid-template-columns: auto 1fr; align-items: start; }
       .query-num { margin-top: 0.2rem; }
       .query-text { font-size: 0.9rem; }
-      .pbi-pages, .dashboard-images, .findings-grid, .cards-grid { grid-template-columns: 1fr; }
+      .pbi-pages, .findings-grid, .cards-grid { grid-template-columns: 1fr; }
       .section-body { font-size: 0.98rem; }
+      .dashboard-iframe iframe {
+        max-width: 100%;
+        height: clamp(520px, 60vw, 720px);
+      }
     }
 
     @media (max-width: 520px) {
@@ -886,9 +970,12 @@
       </div>
     </div>
 
-    <div class="dashboard-images">
-      <img src="/assets/images/Dashboard_page_1.png" alt="Dashboard Page 1">
-      <img src="/assets/images/Dashboard_page_2.png" alt="Dashboard Page 2">
+    <div class="dashboard-iframe dashboard-fullscreen-container" id="dashboardContainer">
+      <div class="dashboard-iframe-toolbar">
+        <button type="button" class="btn-fullscreen" id="enterFullscreen">View full screen</button>
+        <button type="button" class="btn-fullscreen fullscreen-close" id="exitFullscreen" aria-label="Exit full screen">×</button>
+      </div>
+      <iframe id="dashboardIframe" title="Turkish_customer_segmentation" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiNDQ1OTMzYjQtNjkyZS00ZmNhLWI4ZDAtNjI5YTNlYWM2OWJjIiwidCI6IjA1NGFmMjk3LTE5MDgtNDk5MC04ZDY5LTNjOGEyNjM0NGY0NiJ9" frameborder="0" allowFullScreen="true"></iframe>
     </div>
 
   </section>
@@ -1022,6 +1109,29 @@
     document.getElementById('imageModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeModal();
+      }
+    });
+
+    const dashboardContainer = document.getElementById('dashboardContainer');
+    const enterFullscreenBtn = document.getElementById('enterFullscreen');
+    const exitFullscreenBtn = document.getElementById('exitFullscreen');
+
+    function openDashboardFullscreen() {
+      dashboardContainer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDashboardFullscreen() {
+      dashboardContainer.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    enterFullscreenBtn.addEventListener('click', openDashboardFullscreen);
+    exitFullscreenBtn.addEventListener('click', closeDashboardFullscreen);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && dashboardContainer.classList.contains('active')) {
+        closeDashboardFullscreen();
       }
     });
   </script>
