@@ -4,8 +4,15 @@
     "description": "Full-cycle segmentation analysis on a Turkish retail dataset: MySQL queries in Workbench, two-page Power BI dashboard (Gender & Sales / Age & Payment pages) with DAX measures for gender-filtered KPIs and top-category logic. Identified actionable customer clusters for targeted marketing.",
     "tags": ["SQL", "Power BI", "DAX", "MySQL", "Customer Analytics"],
     "image_path": "assets/images/Dashboard_page_1.png",
-    "dashboard_embed_url": "",
     "github_link": "https://github.com/KabirSayyed/turkish-retail-customer-segmentation",
     "view_link": "projects-view/turkish-retail-segmentation/"
+  },
+  {
+    "title": "McDonald's Case Study",
+    "description": "A complete nutritional analysis of McDonald's 57-item menu using MySQL queries, Power BI dashboards, and DAX measures. Key findings: McDonald's leads all 8 chains with 640 kcal average per item (67% above competitors), 74% of items exceed 1,000mg sodium (2.6× daily limit on worst item), and only 19% of menu qualifies as healthier options. Built with live ODBC connection to remote MySQL database.",
+    "tags": ["SQL", "Power BI", "DAX", "MySQL", "Customer Analytics"],
+    "image_path": "assets/images/Dashboard_page_1.png",
+    "github_link": "https://github.com/KabirSayyed/mcdonalds-case-study",
+    "view_link": "projects-view/mcdonalds-case-study/"
   }
 ]
