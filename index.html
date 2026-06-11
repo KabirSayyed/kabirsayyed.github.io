@@ -442,66 +442,6 @@
       background: linear-gradient(90deg, var(--border-lit), transparent);
     }
 
-    /* ─── SKILLS STRIP ───────────────────────────────────── */
-    .skills-section {
-      position: relative;
-      z-index: 1;
-      padding: 64px 48px;
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .project-toolbar {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 18px;
-    }
-
-    .skills-track {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .skill-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: var(--bg-3);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      transition: all var(--transition);
-      min-height: 36px; /* touch target */
-    }
-
-    .skill-pill:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: var(--gold-glow);
-    }
-
-    .skill-pill.selected {
-      border-color: var(--gold);
-      background: rgba(218,165,32,0.12);
-      color: var(--gold);
-      box-shadow: 0 0 0 2px var(--gold-glow);
-    }
-
-    .skill-pill .dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
-
     /* ─── PROJECTS ───────────────────────────────────────── */
     .projects-section {
       position: relative;
@@ -1014,7 +954,8 @@
       .stat-num { font-size: clamp(2.2rem, 3.5vw, 2.8rem); }
       .scroll-hint { left: clamp(1.5rem, 4vw, 2rem); }
 
-      .skills-section { padding: clamp(2.75rem, 5.5vw, 4rem) clamp(1.5rem, 4vw, 2rem); }\n      .projects-section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 2rem); }\n      .about-section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 2rem); }
+      .projects-section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 2rem); }
+      .about-section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 2rem); }
 
       .projects-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
       .about-grid { grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); }
@@ -1040,7 +981,6 @@
       .scroll-hint { display: none; }
       .hero-ticker { display: none; }
 
-      .skills-section { padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 3vw, 1.5rem); }
       .projects-section { padding: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 3vw, 1.5rem); }
       .about-section { padding: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 3vw, 1.5rem); }
 
@@ -1072,7 +1012,6 @@
       .hero-actions { gap: clamp(0.6rem, 1.2vw, 0.85rem); }
       .btn { padding: clamp(0.6rem, 1.2vw, 0.8rem) clamp(0.95rem, 2vw, 1.1rem); font-size: 0.6rem; min-height: 40px; }
 
-      .skills-section { padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(0.85rem, 2.5vw, 1.2rem); }
       .projects-section { padding: clamp(2rem, 4vw, 3rem) clamp(0.85rem, 2.5vw, 1.2rem); }
       .about-section { padding: clamp(2rem, 4vw, 3rem) clamp(0.85rem, 2.5vw, 1.2rem); }
 
@@ -1105,7 +1044,6 @@
       .hero-actions { flex-direction: column; align-items: stretch; gap: 0.5rem; }
       .btn { justify-content: center; width: 100%; padding: 0.55rem 0.85rem; font-size: 0.55rem; min-height: 38px; }
 
-      .skills-section { padding: 1.5rem 0.7rem; }
       .projects-section { padding: 1.75rem 0.7rem; }
       .about-section { padding: 1.75rem 0.7rem; }
 
@@ -1254,18 +1192,6 @@
     </div>
   </section>
 
-  <!-- ── SKILLS ── -->
-  <section class="skills-section">
-    <div class="section-divider">
-      <span class="section-label">// Toolkit</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="project-toolbar">
-      <button id="clear-filters" class="filter-clear-button" type="button">Deselect All</button>
-    </div>
-    <div class="skills-track" id="skills-track"></div>
-  </section>
-
   <!-- ── PROJECTS ── -->
   <section class="projects-section" id="projects">
     <div class="section-divider">
@@ -1286,9 +1212,10 @@
       <div class="about-text">
         <h2>Driven by data,<br/><em>guided by curiosity</em></h2>
         <p>
-          I'm Kabir Sayyed — a Data Analyst Intern at Rubixe AI (Bengaluru),
-          with a strong foundation in mechanical engineering and a passion for
-          translating complex datasets into clear, actionable insights.
+          I'm Kabir Sayyed — I completed a Data Analyst internship at Rubixe AI (Bengaluru)
+          from October 2025 to April 2026, with a strong foundation in mechanical
+          engineering and a passion for translating complex datasets into clear,
+          actionable insights.
         </p>
         <p>
           My workflow spans the full analytics stack: structured SQL queries,
@@ -1307,8 +1234,8 @@
             <span class="contact-value">Nagpur, Maharashtra, India</span>
           </li>
           <li>
-            <span class="contact-label">Current Role</span>
-            <span class="contact-value">Data Analyst Intern — Rubixe AI</span>
+            <span class="contact-label">Most Recent Role</span>
+            <span class="contact-value">Data Analyst Intern — Rubixe AI (Oct 2025–Apr 2026)</span>
           </li>
           <li>
             <span class="contact-label">Certifications</span>
@@ -1335,8 +1262,7 @@
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
-  <footer>
+  <!-- ── FOOTER ── -->  <footer>
     <p>© 2026 <span>Kabir Sayyed</span> &mdash; Built with vanilla JS &amp; web v2.0.0 </p>
   </footer>
 
@@ -1345,13 +1271,7 @@
     /* ═══════════════════════════════════════════
        CONFIG
     ═══════════════════════════════════════════ */
-    const SKILLS = [
-      "SQL", "MySQL Workbench", "Python", "Pandas", "NumPy",
-      "Power BI", "DAX", "Tableau", "Excel", "MongoDB", "Orange (No-Code ML)", "GitHub"
-    ];
-
     let allProjects = [];
-    let selectedSkills = new Set();
 
     /* ═══════════════════════════════════════════
        HAMBURGER TOGGLE
@@ -1389,19 +1309,6 @@
         navDrawer.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
-    });
-
-    /* ═══════════════════════════════════════════
-       SKILLS STRIP
-    ═══════════════════════════════════════════ */
-    const track = document.getElementById('skills-track');
-    SKILLS.forEach(skill => {
-      const pill = document.createElement('div');
-      pill.className = 'skill-pill';
-      pill.setAttribute('data-skill', skill);
-      pill.innerHTML = `<span class="dot"></span>${skill}`;
-      pill.addEventListener('click', () => toggleSkill(skill));
-      track.appendChild(pill);
     });
 
     /* ═══════════════════════════════════════════
@@ -1525,77 +1432,7 @@
         card.style.transitionDelay = `${i * 80}ms`;
         observer.observe(card);
       });
-
-      // Update selected skill styles after rendering
-      setTimeout(updateSkillStyles, 0);
     }
-
-    function toggleSkill(skill) {
-      if (selectedSkills.has(skill)) {
-        selectedSkills.delete(skill);
-      } else {
-        selectedSkills.add(skill);
-      }
-
-      updateSkillStyles();
-      filterProjects();
-    }
-
-    function updateSkillStyles() {
-      document.querySelectorAll('.skill-pill').forEach(pill => {
-        const skill = pill.getAttribute('data-skill');
-        if (selectedSkills.has(skill)) {
-          pill.classList.add('selected');
-        } else {
-          pill.classList.remove('selected');
-        }
-      });
-    }
-
-    function filterProjects() {
-      if (selectedSkills.size === 0) {
-        renderProjects(allProjects);
-        return;
-      }
-
-      const filteredProjects = allProjects.filter(project =>
-        [...selectedSkills].some(skill => projectMatchesSkill(project, skill))
-      );
-
-      renderProjects(filteredProjects);
-    }
-
-    function projectMatchesSkill(project, skill) {
-      const normalizedSkill = skill.toLowerCase();
-      const tags = (project.tags || []).map(tag => tag.toLowerCase());
-
-      if (skill === 'GitHub') {
-        return Boolean(project.github_link);
-      }
-
-      if (skill === 'MySQL Workbench') {
-        return tags.some(tag => tag.includes('mysql'));
-      }
-
-      if (skill === 'Orange (No-Code ML)') {
-        return tags.some(tag => tag.includes('orange'));
-      }
-
-      return tags.some(tag =>
-        tag === normalizedSkill ||
-        tag.includes(normalizedSkill) ||
-        normalizedSkill.includes(tag)
-      );
-    }
-
-    function clearFilters() {
-      if (selectedSkills.size === 0) return;
-      selectedSkills.clear();
-      updateSkillStyles();
-      renderProjects(allProjects);
-    }
-
-    document.getElementById('clear-filters')?.addEventListener('click', clearFilters);
 
     /* ═══════════════════════════════════════════
        INTERSECTION OBSERVER — scroll reveal
