@@ -35,7 +35,7 @@
       --bg-core: #06080d;
       --bg-surface: #0b0f17;
       --bg-card: #111726;
-      --border-subtle: rgba(255, 255, 255, 0.12); /* Increased for Chrome Skia contrast */
+      --border-subtle: rgba(255, 255, 255, 0.12);
       --border-lit: rgba(56, 189, 248, 0.35);
       --cyan: #38bdf8;
       --cyan-dim: rgba(56, 189, 248, 0.12);
@@ -119,10 +119,31 @@
       justify-content: space-between;
       padding: 0 clamp(1rem, 4vw, 4rem);
     }
-    .nav-brand { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; letter-spacing: 0.05em; }
+    .nav-brand { 
+      font-family: var(--font-mono); 
+      font-size: 0.85rem; 
+      font-weight: 600; 
+      color: var(--text-main); 
+      text-decoration: none; 
+      letter-spacing: 0.05em; 
+      white-space: nowrap;
+    }
     .nav-brand span { color: var(--cyan); }
-    .nav-menu { display: flex; gap: 28px; list-style: none; }
-    .nav-link { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color var(--duration) var(--ease-smooth); }
+    .nav-menu { 
+      display: flex; 
+      gap: clamp(14px, 1.8vw, 24px); 
+      list-style: none; 
+    }
+    .nav-link { 
+      font-family: var(--font-mono); 
+      font-size: 0.75rem; 
+      color: var(--text-muted); 
+      text-decoration: none; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+      transition: color var(--duration) var(--ease-smooth); 
+      white-space: nowrap;
+    }
     .nav-link:hover { color: var(--cyan); }
 
     /* Mobile Toggle Button */
@@ -188,28 +209,87 @@
     .hero-bio strong { color: var(--text-main); font-weight: 600; }
     
     .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 0; width: 100%; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; text-decoration: none; border-radius: 8px; transition: all var(--duration) var(--ease-smooth); cursor: pointer; text-align: center; }
-    .btn-primary { background: var(--cyan); color: #040810; border: 1px solid var(--cyan); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; text-decoration: none; border-radius: 8px; transition: all var(--duration) var(--ease-smooth); cursor: pointer; text-align: center; white-space: nowrap; }
+    .btn-primary { background: var(--cyan); color: #040810; border: 1px solid var(--cyan); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25); }
     .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(56, 189, 248, 0.4); }
-    .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border-subtle); }
-    .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+    .btn-outline { background: var(--bg-card); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
+    .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); transform: translateY(-2px); }
 
-    .recruiter-telemetry { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border-subtle); border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; backdrop-filter: blur(12px); width: 100%; }
-    .telemetry-cell { background: var(--bg-surface); padding: 20px 24px; display: flex; flex-direction: column; gap: 4px; transition: background var(--duration) var(--ease-smooth); }
+    /* 4-Column Telemetry Grid */
+    .recruiter-telemetry { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); 
+      gap: 1px; 
+      background: var(--border-subtle); 
+      border: 1px solid var(--border-subtle); 
+      border-radius: 12px; 
+      overflow: hidden; 
+      backdrop-filter: blur(12px); 
+      width: 100%; 
+    }
+    
+    .telemetry-cell { 
+      background: var(--bg-surface); 
+      padding: 18px 16px;
+      display: flex; 
+      flex-direction: column; 
+      gap: 4px; 
+      transition: background var(--duration) var(--ease-smooth); 
+      min-width: 0;
+    }
     .telemetry-cell:hover { background: var(--bg-card); }
     .telemetry-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em; }
     .telemetry-value { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
     .telemetry-sub { font-size: 0.75rem; color: var(--text-dim); }
 
-    .telemetry-btn-wrap { display: flex; gap: 8px; margin-top: auto; padding-top: 12px; flex-wrap: wrap; }
-    .telemetry-btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 5px 12px;
-      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; color: var(--cyan);
-      background: var(--cyan-dim); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 4px;
-      text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: all var(--duration) var(--ease-smooth);
-      cursor: pointer; width: fit-content;
+    .telemetry-btn-wrap { 
+      display: flex; 
+      gap: 6px; 
+      margin-top: auto; 
+      padding-top: 12px; 
+      flex-wrap: nowrap; 
+      align-items: center;
+      width: 100%;
     }
-    .telemetry-btn:hover { background: var(--cyan); color: #040810; border-color: var(--cyan); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+
+    .telemetry-btn {
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 6px; 
+      padding: 6px 10px;
+      font-family: var(--font-mono); 
+      font-size: 0.68rem; 
+      font-weight: 600; 
+      color: var(--cyan);
+      background: var(--cyan-dim); 
+      border: 1px solid rgba(56, 189, 248, 0.25); 
+      border-radius: 4px;
+      text-decoration: none; 
+      text-transform: uppercase; 
+      letter-spacing: 0.04em; 
+      transition: all var(--duration) var(--ease-smooth);
+      cursor: pointer; 
+      width: fit-content;
+      white-space: nowrap; 
+      line-height: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
+    }
+    .telemetry-btn:hover { 
+      background: var(--cyan); 
+      color: #040810; 
+      border-color: var(--cyan); 
+      transform: translateY(-1px); 
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); 
+    }
+
+    .telemetry-cell:nth-child(3) .telemetry-btn {
+      flex: 1;
+      padding: 6px 4px;
+      text-align: center;
+    }
 
     /* ─── 4. SECTIONS (ABOUT, TIMELINE, SKILLS) ─── */
     .section-wrap { 
@@ -242,7 +322,7 @@
     .skill-pill { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-main); background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); padding: 6px 12px; border-radius: 6px; transition: all var(--duration) var(--ease-smooth); }
     .skill-pill:hover { border-color: var(--cyan); background: var(--cyan-dim); }
 
-    /* ─── 5. PROJECTS GRID & FILTERING (CHROME NORMALIZED) ─── */
+    /* ─── 5. PROJECTS GRID & FILTERING ─── */
     .filter-bar { 
       display: flex; 
       gap: 12px; 
@@ -252,7 +332,7 @@
     }
     .filter-btn { 
       background: rgba(255, 255, 255, 0.02); 
-      border: 1px solid rgba(255, 255, 255, 0.14); /* Crisp, visible border across all mobile engines */
+      border: 1px solid rgba(255, 255, 255, 0.14); 
       color: var(--text-muted); 
       font-family: var(--font-mono); 
       font-size: 0.75rem; 
@@ -296,11 +376,10 @@
     .p-tag { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); background: var(--cyan-dim); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.2); }
     .p-actions { display: flex; gap: 12px; margin-top: auto; width: 100%; }
 
-    /* ─── 6. CERTIFICATIONS ─── */
+    /* ─── 6. CERTIFICATIONS (UNIFIED FULL-WIDTH GRID) ─── */
     .certs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 340px));
-      justify-content: center;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 24px;
       margin-top: 40px;
       width: 100%;
@@ -367,11 +446,11 @@
       min-height: 65px;
     }
 
-    /* ─── 7. CONTACT SECTION (NO OVERFLOW WRAP ON EMAIL) ─── */
+    /* ─── 7. CONTACT SECTION (NORMALIZED 1-LINE TYPOGRAPHY) ─── */
     .contact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
       margin-top: 32px;
       width: 100%;
     }
@@ -379,14 +458,15 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 22px 20px;
+      padding: 18px 12px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
       text-decoration: none;
       color: inherit;
       transition: all var(--duration) var(--ease-smooth);
       width: 100%;
+      min-width: 0;
     }
     .contact-card:hover {
       border-color: var(--border-lit);
@@ -395,8 +475,8 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .contact-icon {
-      width: 46px;
-      height: 46px;
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
       background: var(--cyan-dim);
       border: 1px solid rgba(56, 189, 248, 0.25);
@@ -412,16 +492,20 @@
       gap: 2px;
       min-width: 0;
       flex: 1;
+      overflow: hidden;
     }
     .contact-type {
       font-family: var(--font-mono);
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       color: var(--cyan);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
+      white-space: nowrap; /* PREVENTS 'PROFESSIONAL \n NETWORK' WRAPPING */
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .contact-val {
-      font-size: clamp(0.85rem, 3.5vw, 1rem);
+      font-size: clamp(0.72rem, 1.05vw, 0.95rem);
       font-weight: 600;
       color: var(--text-main);
       white-space: nowrap;
@@ -430,9 +514,12 @@
     }
     .contact-action {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
       margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* ─── 8. RESEARCH PAPER SELECTION MODAL ─── */
@@ -579,43 +666,85 @@
     /* ─── 10. FOOTER ─── */
     footer { border-top: 1px solid var(--border-subtle); padding: 40px 16px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); width: 100%; }
 
-    /* ─── 11. MOBILE & TABLET RESPONSIVE TUNING ─── */
-    @media (max-width: 899px) {
-      .mobile-toggle { display: block; }
-      .nav-menu { 
-        display: none; position: absolute; top: var(--nav-h); left: 0; right: 0; 
-        background: var(--bg-surface); flex-direction: column; gap: 0; 
-        border-bottom: 1px solid var(--border-subtle); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      }
-      .nav-menu.active { display: flex; }
-      .nav-menu li { width: 100%; border-top: 1px solid rgba(255,255,255,0.02); }
-      .about-grid { grid-template-columns: 1fr; gap: 32px; }
-      .hero-layout { grid-template-columns: 1fr; gap: 32px; }
-      .hero-avatar-wrap { order: -1; justify-content: flex-start; }
-      .hero-avatar-frame { width: 160px; height: 160px; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .btn { width: 100%; }
-    }
-
+    /* ─── 11. UNIFIED MOBILE BREAKPOINT (<= 768px ONLY) ─── */
     @media (max-width: 768px) {
-      /* Consistent 16px side gutters eliminating Chrome pinching */
+      .mobile-toggle { 
+        display: block; 
+      }
+
       .nav-inner {
         padding-inline: 16px;
       }
 
-      .hero {
-        padding: calc(var(--nav-h) + 24px) 16px 56px;
+      .nav-menu { 
+        display: none; 
+        position: absolute; 
+        top: var(--nav-h); 
+        left: 0; 
+        right: 0; 
+        background: var(--bg-surface); 
+        flex-direction: column; 
+        gap: 0; 
+        border-bottom: 1px solid var(--border-subtle); 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       }
-
-      .section-wrap {
-        padding: 56px 16px;
+      .nav-menu.active { 
+        display: flex; 
       }
-
+      .nav-menu li { 
+        width: 100%; 
+        border-top: 1px solid rgba(255,255,255,0.02); 
+      }
       .nav-link {
         padding: 16px;
       }
 
-      /* Clean 2-per-row symmetric grid on mobile */
+      /* Hero Mobile View */
+      .hero {
+        padding: calc(var(--nav-h) + 24px) 16px 56px;
+      }
+      .hero-layout { 
+        grid-template-columns: 1fr; 
+        gap: 32px; 
+      }
+      .hero-avatar-wrap { 
+        order: -1; 
+        justify-content: flex-start; 
+      }
+      .hero-avatar-frame { 
+        width: 160px; 
+        height: 160px; 
+      }
+      .hero-actions { 
+        flex-direction: column; 
+        align-items: stretch; 
+      }
+      .hero-actions .btn { 
+        width: 100%; 
+      }
+
+      /* Single column telemetry on physical mobile viewports */
+      .recruiter-telemetry {
+        grid-template-columns: 1fr;
+      }
+
+      .telemetry-btn-wrap {
+        flex-wrap: wrap;
+      }
+      .telemetry-cell:nth-child(3) .telemetry-btn {
+        flex: 1 1 calc(50% - 4px);
+      }
+
+      /* Body Sections */
+      .section-wrap {
+        padding: 56px 16px;
+      }
+      .about-grid { 
+        grid-template-columns: 1fr; 
+        gap: 32px; 
+      }
+
+      /* Filter Bar 2x2 Grid */
       .filter-bar {
         gap: 8px;
         margin-bottom: 24px;
@@ -630,7 +759,7 @@
         justify-content: center;
       }
 
-      /* Full-width responsive cards */
+      /* Projects & Certs */
       .projects-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -648,10 +777,6 @@
       .p-body,
       .telemetry-cell {
         padding: 18px 16px;
-      }
-
-      .recruiter-telemetry {
-        grid-template-columns: 1fr;
       }
 
       .certs-grid {
@@ -949,7 +1074,7 @@
       <!-- Email Card -->
       <a href="mailto:kabirsayyed16@gmail.com" class="contact-card">
         <div class="contact-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
@@ -967,7 +1092,7 @@
          rel="noopener noreferrer" 
          class="contact-card">
         <div class="contact-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
           </svg>
         </div>
@@ -981,7 +1106,7 @@
       <!-- LinkedIn Card -->
       <a href="https://linkedin.com/in/kabir-sayyed" target="_blank" rel="noopener noreferrer" class="contact-card">
         <div class="contact-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
             <rect x="2" y="9" width="4" height="12"/>
             <circle cx="4" cy="4" r="2"/>
