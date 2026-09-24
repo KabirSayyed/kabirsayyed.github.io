@@ -446,7 +446,7 @@
       min-height: 65px;
     }
 
-    /* ─── 7. CONTACT SECTION (NORMALIZED 1-LINE TYPOGRAPHY) ─── */
+    /* ─── 7. CONTACT SECTION ─── */
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -500,7 +500,7 @@
       color: var(--cyan);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      white-space: nowrap; /* PREVENTS 'PROFESSIONAL \n NETWORK' WRAPPING */
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -612,55 +612,121 @@
       width: 100%;
     }
 
-    /* ─── 9. CERTIFICATE POPUP MODAL & MULTI-SLIDER ─── */
-    .cert-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(4, 7, 13, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* ─── 9. CERTIFICATE POPUP MODAL (REPOSITIONED BELOW IMAGE) ─── */
+    .cert-modal { 
+      display: none; 
+      position: fixed; 
+      inset: 0; 
+      z-index: 9999; 
+      background: rgba(4, 7, 13, 0.92); 
+      backdrop-filter: blur(14px); 
+      -webkit-backdrop-filter: blur(14px); 
+      justify-content: center; 
+      align-items: center; 
+      padding: 16px; 
+      opacity: 0; 
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+      box-sizing: border-box;
+    }
     .cert-modal.active { display: flex; opacity: 1; }
-    .cert-modal-content { position: relative; max-width: 92vw; max-height: 85vh; display: flex; align-items: center; justify-content: center; }
-    .cert-modal-content img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 12px; border: 1px solid var(--border-lit); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); transform: scale(0.96); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+    
+    .cert-modal-content { 
+      position: relative; 
+      max-width: 92vw; 
+      max-height: 88vh; 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center; 
+      width: fit-content;
+    }
+    .cert-modal-content img { 
+      max-width: 100%; 
+      max-height: 68vh; 
+      object-fit: contain; 
+      border-radius: 12px; 
+      border: 1px solid var(--border-lit); 
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85); 
+      transform: scale(0.96); 
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+      display: block;
+    }
     .cert-modal.active .cert-modal-content img { transform: scale(1); }
     
-    .cert-modal-close { position: absolute; top: -24px; right: -24px; width: 44px; height: 44px; background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-main); border-radius: 50%; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 10000; }
+    /* Close Button positioned cleanly above top-right edge */
+    .cert-modal-close { 
+      position: absolute; 
+      top: -46px; 
+      right: 0; 
+      width: 38px; 
+      height: 38px; 
+      background: var(--bg-card); 
+      border: 1px solid var(--border-subtle); 
+      color: var(--text-main); 
+      border-radius: 50%; 
+      font-size: 1.4rem; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      transition: all 0.2s ease; 
+      z-index: 10001; 
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
     .cert-modal-close:hover { border-color: var(--cyan); color: var(--cyan); transform: scale(1.08); }
 
+    /* Footer Container Below Certificate */
+    .cert-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 600px;
+      padding: 0 4px;
+      box-sizing: border-box;
+    }
+
+    /* Standard Flex Navigation Buttons */
     .cert-modal-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
+      position: static;
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
       background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
+      border: 1px solid var(--border-lit);
+      color: var(--cyan);
       border-radius: 50%;
       font-size: 1.1rem;
-      display: none;
+      display: none; /* Managed by JS */
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s var(--ease-smooth);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
       z-index: 10000;
     }
     .cert-modal-nav:hover {
+      background: var(--cyan);
+      color: #040810;
       border-color: var(--cyan);
-      color: var(--cyan);
-      transform: translateY(-50%) scale(1.08);
+      transform: scale(1.08);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
     }
-    .cert-modal-prev { left: -60px; }
-    .cert-modal-next { right: -60px; }
 
+    /* In-Flow Caption between Buttons */
     .cert-modal-caption {
-      position: absolute;
-      bottom: -36px;
-      left: 0;
-      right: 0;
-      text-align: center;
+      position: static;
+      flex: 1;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: clamp(0.72rem, 1.2vw, 0.82rem);
       color: var(--cyan);
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.4;
+      word-break: break-word;
     }
 
     /* ─── 10. FOOTER ─── */
@@ -805,21 +871,6 @@
 
       .paper-choice-actions { 
         grid-template-columns: 1fr; 
-      }
-      .cert-modal-close { 
-        top: -45px; 
-        right: 0; 
-      }
-      .cert-modal-prev { 
-        left: 8px; 
-      }
-      .cert-modal-next { 
-        right: 8px; 
-      }
-      .cert-modal-caption { 
-        bottom: -44px; 
-        font-size: 0.68rem; 
-        white-space: normal; 
       }
     }
   </style>
@@ -1154,10 +1205,15 @@
   <div id="certModal" class="cert-modal" role="dialog" aria-modal="true" aria-label="Certificate Preview">
     <div class="cert-modal-content">
       <button class="cert-modal-close" id="certModalClose" aria-label="Close certificate">&times;</button>
-      <button class="cert-modal-nav cert-modal-prev" id="certPrev" aria-label="Previous certificate">&#10094;</button>
+      
       <img id="certModalImg" src="" alt="Enlarged Certificate View" />
-      <button class="cert-modal-nav cert-modal-next" id="certNext" aria-label="Next certificate">&#10095;</button>
-      <div class="cert-modal-caption" id="certCaption"></div>
+
+      <!-- Controls and Caption Cleanly Flanked Below the Certificate -->
+      <div class="cert-modal-footer">
+        <button class="cert-modal-nav cert-modal-prev" id="certPrev" aria-label="Previous certificate">&#10094;</button>
+        <div class="cert-modal-caption" id="certCaption"></div>
+        <button class="cert-modal-nav cert-modal-next" id="certNext" aria-label="Next certificate">&#10095;</button>
+      </div>
     </div>
   </div>
 
